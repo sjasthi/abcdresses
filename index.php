@@ -135,8 +135,8 @@ table.center {
     //}
 
     //select puzzles using the preferences restrictions
-    $sql2 = "SELECT `name` FROM `dresses` ORDER BY RAND() LIMIT $questNum";
-    $sql3 = "SELECT `image_url` FROM `dresses` ORDER BY RAND() LIMIT $questNum";
+    $sql2 = "SELECT `name`, `id`, `dress_image` FROM `dresses` ORDER BY RAND() LIMIT $questNum"; //using this as the real one
+    $sql3 = "SELECT `dress_image` FROM `dresses` ORDER BY RAND() LIMIT $questNum";
 
     $results1 = mysqli_query($db,$sql1);
     $results2 = mysqli_query($db,$sql2);
@@ -205,11 +205,12 @@ if( isset( $_SESSION['logged_in'] ) || !isset($_COOKIE['numberOfRows']) ) {
             }else{
                 
         $dress = $dresses[$a]['name'];
-        $pic = $pics[$a]['image_url'];
+        $pic = $dresses[$a]['dress_image'];
+        $id = $dresses[$a]['id'];
         echo "
         <td>
-            <a href = 'display_quiz.php?topic=$dress' title = $dress>
-            <img class = 'image' src='dress_images/$pic'  alt= $pic>
+            <a href = 'view_dress.php?id=$id' title = $id>
+            <img class = 'image' src='./images/dress_images/$pic'  alt= $pic>
                 
             </a>
         </td>";
@@ -229,7 +230,7 @@ if( isset( $_SESSION['logged_in'] ) || !isset($_COOKIE['numberOfRows']) ) {
     echo "<div id='carouselExampleControls' class='carousel slide' data-ride='carousel'>
     <div class='carousel-inner'>
       <div class='carousel-item active'>
-        <img src='dress_images/crop_top_girl.jpg' class='d-block w-100' alt='...'>
+        <img src='./images/dress_images/crop_top_girl.jpg' class='d-block w-100' alt='...'>
       </div>";
 
     
@@ -238,9 +239,11 @@ if( isset( $_SESSION['logged_in'] ) || !isset($_COOKIE['numberOfRows']) ) {
     for ($a=0; $a<$count; $a++){
 
         //loop through all the images
-        $pic = $pics[$a]['image_url'];
+        $pic = $dresses[$a]['dress_image'];
+        $id = $dresses[$a]['id'];
         echo "<div class='carousel-item'>
-        <img src='dress_images/$pic' class='d-block w-100' alt='$pic'>
+        <a href = 'view_dress.php?id=$id' title = $id>
+        <img src='./images/dress_images/$pic' class='d-block w-100' alt='$pic'>
       </div>";
     
     }
